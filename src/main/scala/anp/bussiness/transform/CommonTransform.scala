@@ -25,7 +25,7 @@ trait CommonTransform {
 
     def readWorkSheet(spark: SparkSession, ws: String, sheetPos: String, schema: StructType): DataFrame = {       
         // val dataAddress = s"$ws$sheetPos"
-        val dataAddress = ws + sheetPos
+        val dataAddress = "'" + (ws.substring(1,ws.length -1) + "'" +  sheetPos
         val file = configManager.getString(s"sheet.path_hdfs")
         // var schema = getSchema(ws)
         readXls(spark, file, dataAddress, schema)
