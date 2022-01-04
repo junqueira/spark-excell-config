@@ -31,13 +31,8 @@ object FuelTransform extends CommonTransform {
     def execute(spark: SparkSession): Unit = {
         try {
             log.info(s"Initial read xls fuel... -> ")
-
-            //todo need interation ws
-            val ws = "DPCache_m3"
-            val position="!A1:Q5000"
-            val bulkFuel = readWorkSheet(spark, ws, position, fuelSchema)
-            // val bulkFuel = mergeWorkSheets(spark, ws, position)
-            bulkFuel.show()
+            val worksheet = "fuel"
+            mergeWorkSheets(spark, worksheet, fuelSchema)
         } catch {
             case e: Exception => log.info(e.printStackTrace())
         }

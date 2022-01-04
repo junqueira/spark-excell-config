@@ -13,14 +13,19 @@ trait CommonTransform {
     val configManager = ConfigFactory.load()
     val file = configManager.getString(s"sheet.path_hdfs")
 
-    def mergeWorkSheets(spark: SparkSession, worksheet: String, position: String): String = {
-        val worksheets = configManager.getString(s"sheet.$worksheet.worksheets")
-        //worksheets.foreach(x => readWorkSheet(x.ws))
-        worksheets
+    def mergeWorkSheets(spark: SparkSession, worksheet: String, schema: StructType): Unit = {
+        for (i <- 1 to 3) {
+            val position = decimalToBinary(i.toInt)
+            val ws = configManager.getConfig(s"sheet.$worksheet.worksheets.$position").root.get("ws").render
+            val sheetPos = configManager.getConfig(s"sheet.$worksheet.worksheets.$position").root.get("pos").render
+            val sheet = readWorkSheet(spark, ws, sheetPos, schema)
+            sheet.show
+        }
     }
 
-    def readWorkSheet(spark: SparkSession, ws: String, position: String, schema: StructType): DataFrame = {       
-        val dataAddress = s"$ws$position"
+    def readWorkSheet(spark: SparkSession, ws: String, sheetPos: String, schema: StructType): DataFrame = {       
+        val dataAddress = s"$ws$sheetPos"
+        val file = configManager.getString(s"sheet.path_hdfs")
         // var schema = getSchema(ws)
         readXls(spark, file, dataAddress, schema)
     }

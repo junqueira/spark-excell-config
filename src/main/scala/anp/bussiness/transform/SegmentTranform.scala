@@ -31,10 +31,8 @@ object SegmentTransform extends CommonTransform {
     def execute(spark: SparkSession): Unit = {
         try {
             log.info(s"Initial read xls segment... -> ")
-            val ws = "segment"
-            val position="!A1:P5000"
-            val bulkSegment = readWorkSheet(spark, ws, position, segmentSchema)
-            bulkSegment.show
+            val worksheet = "segment"
+            mergeWorkSheets(spark, worksheet, segmentSchema)
         } catch {
             case e: Exception => log.info(e.printStackTrace())
         }
