@@ -17,7 +17,7 @@ object Anp {
         try {
             log.info(s"Initial read apn xls.. -> ")
             // val fuelTransform = new FuelTransform
-            FuelTransform.execute(spark, worksheet)
+            FuelTransform.execute(spark)
         } catch {
             case e: Exception => log.info(e.printStackTrace())
         }
@@ -26,7 +26,7 @@ object Anp {
     def segment(spark: SparkSession, worksheet: String): Unit = {
         try {
             log.info(s"Initial read apn xls.. -> ")
-            SegmentTransform.execute(spark, worksheet)
+            SegmentTransform.execute(spark)
         } catch {
             case e: Exception => log.info(e.printStackTrace())
         }

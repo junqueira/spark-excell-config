@@ -13,27 +13,28 @@ trait CommonTransform {
     val configManager = ConfigFactory.load()
     val file = configManager.getString(s"sheet.path_hdfs")
 
-    def mergeWorkSheets(spark: SparkSession, worksheet: String, position: String): DataFrame = {
+    def mergeWorkSheets(spark: SparkSession, worksheet: String, position: String): String = {
         val worksheets = configManager.getString(s"sheet.$worksheet.worksheets")
         //worksheets.foreach(x => readWorkSheet(x.ws))
+        worksheets
     }
 
-    def readWorkSheet(spark: SparkSession, ws: String, position: String): DataFrame = {       
+    def readWorkSheet(spark: SparkSession, ws: String, position: String, schema: StructType): DataFrame = {       
         val dataAddress = s"$ws$position"
-        var schema = getSchema(ws)
-        val bulkFuel = readXls(spark, file, dataAddress, fuelSchema)
+        // var schema = getSchema(ws)
+        readXls(spark, file, dataAddress, schema)
     }
 
-    def getSchema(ws: ConfigFactory): StructType = {
-        var schema: Array()
-        for (i <- 1 to 17) {
-            val position = decimalToBinary(i)
-            col = ws.getConfig(position).root.get("collumn")
-            typ = ws.getConfig(position).root.get("type")
-            schema.append(s"StructField($col, $typ, nullable = false)")
-        }
-        StructType(schema)
-    }
+    // def getSchema(ws: ConfigFactory): StructType = {
+    //     var schema: Array()
+    //     for (i <- 1 to 17) {
+    //         val position = decimalToBinary(i)
+    //         col = ws.getConfig(position).root.get("collumn")
+    //         typ = ws.getConfig(position).root.get("type")
+    //         schema.append(s"StructField($col, $typ, nullable = false)")
+    //     }
+    //     StructType(schema)
+    // }
 
     def readXls(spark: SparkSession, file: String, dataAddress: String, schema: StructType): DataFrame = {
         spark.read

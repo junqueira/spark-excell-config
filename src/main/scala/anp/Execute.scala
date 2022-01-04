@@ -6,12 +6,6 @@ import anp.helper.SparkUtils
 import anp.bussiness.Anp
 
 
-// spark.driver.extraJavaOptions      -Dlog4j.configuration=file:log4j.properties -Dspark.yarn.app.container.log.dir=app-logs -Dlogfile.name=hello-spark
-import com.typesafe.config.ConfigFactory
-val configManager = ConfigFactory.load()
-val loglevel = configManager.getString(s"log.level")
-
-
 object Execute {
     val log: Logger = Logger.getLogger(Execute.getClass)
     log.info(s"*************************************  test1  *********************************************")
@@ -49,7 +43,7 @@ object Execute {
                 case "anp" =>
                     log.info(s"call => $fonte... ")
                     Anp.fuel(spark, worksheet)
-                    // Anp.segment(spark, worksheet)
+                    Anp.segment(spark, worksheet)
 
                 case _ =>
                     log.error(fonte + s" Fonte not found!")

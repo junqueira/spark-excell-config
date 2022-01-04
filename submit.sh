@@ -18,7 +18,7 @@ PATH_CONF=${MODULE}"/"
 SPARK_APPLICATION=${PATH_JARS}"anp-spark-assembly-0.1.jar"
 APPLICATION_MAIN_CLASS=anp.Execute
 
-APPLICATION_ARGS="anp"
+APPLICATION_ARGS="anp ws"
 # APPLICATION_ARGS="anp DPCache_m3_4"
 CONFIG=${PATH_CONF}"application.conf"
 

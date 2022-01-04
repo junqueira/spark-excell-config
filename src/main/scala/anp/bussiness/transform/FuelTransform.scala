@@ -9,24 +9,24 @@ import org.apache.spark.sql.types._
 
 object FuelTransform extends CommonTransform {
 
-    // val fuelSchema = StructType(Array(
-    //     StructField("COMBUSTÍVEL", StringType, nullable = false),
-    //     StructField("ANO", IntegerType, nullable = false),
-    //     StructField("REGIÃO", StringType, nullable = false),
-    //     StructField("ESTADO", StringType, nullable = false),
-    //     StructField("Jan", DoubleType, nullable = false),
-    //     StructField("Fev", DoubleType, nullable = false),
-    //     StructField("Mar", DoubleType, nullable = false),
-    //     StructField("Abr", DoubleType, nullable = false),
-    //     StructField("Maio", DoubleType, nullable = false),
-    //     StructField("Jun", DoubleType, nullable = false),
-    //     StructField("Jul", DoubleType, nullable = false),
-    //     StructField("Ago", DoubleType, nullable = false),
-    //     StructField("Set", DoubleType, nullable = false),
-    //     StructField("Out", DoubleType, nullable = false),
-    //     StructField("Nov", DoubleType, nullable = false),
-    //     StructField("Dez", DoubleType, nullable = false),
-    //     StructField("Total", DoubleType, nullable = false)))
+    val fuelSchema = StructType(Array(
+        StructField("COMBUSTÍVEL", StringType, nullable = false),
+        StructField("ANO", IntegerType, nullable = false),
+        StructField("REGIÃO", StringType, nullable = false),
+        StructField("ESTADO", StringType, nullable = false),
+        StructField("Jan", DoubleType, nullable = false),
+        StructField("Fev", DoubleType, nullable = false),
+        StructField("Mar", DoubleType, nullable = false),
+        StructField("Abr", DoubleType, nullable = false),
+        StructField("Maio", DoubleType, nullable = false),
+        StructField("Jun", DoubleType, nullable = false),
+        StructField("Jul", DoubleType, nullable = false),
+        StructField("Ago", DoubleType, nullable = false),
+        StructField("Set", DoubleType, nullable = false),
+        StructField("Out", DoubleType, nullable = false),
+        StructField("Nov", DoubleType, nullable = false),
+        StructField("Dez", DoubleType, nullable = false),
+        StructField("Total", DoubleType, nullable = false)))
 
     def execute(spark: SparkSession): Unit = {
         try {
@@ -35,7 +35,7 @@ object FuelTransform extends CommonTransform {
             //todo need interation ws
             val ws = "DPCache_m3"
             val position="!A1:Q5000"
-            val bulkFuel = readWorkSheet(spark, ws, position)
+            val bulkFuel = readWorkSheet(spark, ws, position, fuelSchema)
             // val bulkFuel = mergeWorkSheets(spark, ws, position)
             bulkFuel.show()
         } catch {
