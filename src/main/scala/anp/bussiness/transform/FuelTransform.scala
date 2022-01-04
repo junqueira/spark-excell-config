@@ -32,7 +32,8 @@ object FuelTransform extends CommonTransform {
         try {
             log.info(s"Initial read xls fuel... -> ")
             val worksheet = "fuel"
-            mergeWorkSheets(spark, worksheet, fuelSchema)
+            val sheetPos = "!A1:Q5000"
+            mergeWorkSheets(spark, worksheet, sheetPos, fuelSchema)
         } catch {
             case e: Exception => log.info(e.printStackTrace())
         }

@@ -32,7 +32,8 @@ object SegmentTransform extends CommonTransform {
         try {
             log.info(s"Initial read xls segment... -> ")
             val worksheet = "segment"
-            mergeWorkSheets(spark, worksheet, segmentSchema)
+            val sheetPos = "!A1:P5000"
+            mergeWorkSheets(spark, worksheet, sheetPos, segmentSchema)
         } catch {
             case e: Exception => log.info(e.printStackTrace())
         }
