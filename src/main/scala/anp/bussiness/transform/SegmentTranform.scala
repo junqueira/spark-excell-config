@@ -28,23 +28,19 @@ object SegmentTransform extends CommonTransform {
         StructField("Total", DoubleType, nullable = false)))
 
 
-    def execute(spark: SparkSession): Unit = {
+    def execute(spark: SparkSession): DataFrame = {
         try {
             log.info(s"Initial read xls segment... -> ")
             val worksheet = "segment"
             val sheetPos = "!A1:P5000"
-            mergeWorkSheets(spark, worksheet, sheetPos, segmentSchema)
+            val ws = mergeWorkSheets(spark, worksheet, sheetPos, segmentSchema)
+            println(s"worksheet: $worksheet quant-> " + ws.count)
+            ws
         } catch {
             case e: Exception => log.info(e.printStackTrace())
         }
     }
 
-    // def aggRegion(df: DataFrame, region: String="AMAZONAS", month: String="Jan"): DataFrame = {
-    //     val region = df.filter(col("ESTADO")===region)
-    //         .agg(sum(col(month)))
-    //     region.show
-    //     region
-    // }
 
 
 }

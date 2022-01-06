@@ -1,7 +1,7 @@
 package anp.bussiness.transform
 
 import org.apache.log4j.Logger
-import org.apache.spark.sql.{DataFrame, SparkSession}
+import org.apache.spark.sql.{Row, DataFrame, SparkSession}
 import io.delta.tables._
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types._
@@ -13,13 +13,16 @@ trait CommonTransform {
     val configManager = ConfigFactory.load()
     val file = configManager.getString(s"sheet.path_hdfs")
 
+    def aggRegion(df: DataFrame, uf: String="", month: String="Jan"): DataFrame = {
+        val region = df.filter(col("ESTADO")==uf)
+            .agg(sum(col(month)))
+        region.show
+        region
+    }
 
-    def mergeWorkSheets(spark: SparkSession, worksheet: String, sheetPos: String, schema: StructType): Unit = {
-        // var sheets = spark.createDataFrame(
-        //     spark.sparkContext.parallelize(data), 
-        //     StructType(schema)
-        // )
-        var sheets = test()
+
+    def mergeWorkSheets(spark: SparkSession, worksheet: String, sheetPos: String, schema: StructType): DataFrame = {
+        var sheets = spark.createDataFrame(spark.sparkContext.emptyRDD[Row], schema)
         for (i <- 1 to 3) {
             val position = decimalToBinary(i.toInt)
             val ws = configManager.getConfig(s"sheet.$worksheet.worksheets.$position").root.get("ws").render  
@@ -27,15 +30,6 @@ trait CommonTransform {
         }
         sheets
     }
-
-    def test: DataFrame = {
-        data 
-        var sheets = spark.createDataFrame(
-            spark.sparkContext.parallelize(data), 
-            StructType(schema)
-        )      
-    }
-
 
     def readWorkSheet(spark: SparkSession, ws: String, sheetPos: String, schema: StructType): DataFrame = {       
         val dataAddress = "'" + ws.substring(1, ws.length -1) + "'" +  sheetPos

@@ -28,24 +28,20 @@ object FuelTransform extends CommonTransform {
         StructField("Dez", DoubleType, nullable = false),
         StructField("Total", DoubleType, nullable = false)))
 
-    def execute(spark: SparkSession): Unit = {
+    def execute(spark: SparkSession): DataFrame = {
         try {
             log.info(s"Initial read xls fuel... -> ")
             val worksheet = "fuel"
             val sheetPos = "!A1:Q5000"
-            val shetts = mergeWorkSheets(spark, worksheet, sheetPos, fuelSchema)
-            shetts.show
+            val ws = mergeWorkSheets(spark, worksheet, sheetPos, fuelSchema)
+            println(s"worksheet: $worksheet quant-> " + ws.count)
+            ws
         } catch {
             case e: Exception => log.info(e.printStackTrace())
         }
     }
 
-    // def aggRegion(df: DataFrame, region: String="AMAZONAS", month: String="Jan"): DataFrame = {
-    //     val region = df.filter(col("ESTADO")==region)
-    //         .agg(sum(col(month)))
-    //     region.show
-    //     region
-    // }
+  
 
 
 }
