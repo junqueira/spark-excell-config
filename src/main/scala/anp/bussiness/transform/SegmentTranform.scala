@@ -10,35 +10,32 @@ import org.apache.spark.sql.types._
 object SegmentTransform extends CommonTransform {
 
     val segmentSchema = StructType(Array(
-        StructField("ANO", IntegerType, nullable = false),
-        StructField("SEGMENTO", StringType, nullable = false),
-        StructField("ESTADO", StringType, nullable = false),
-        StructField("Jan", DoubleType, nullable = false),
-        StructField("Fev", DoubleType, nullable = false),
-        StructField("Mar", DoubleType, nullable = false),
-        StructField("Abr", DoubleType, nullable = false),
-        StructField("Maio", DoubleType, nullable = false),
-        StructField("Jun", DoubleType, nullable = false),
-        StructField("Jul", DoubleType, nullable = false),
-        StructField("Ago", DoubleType, nullable = false),
-        StructField("Set", DoubleType, nullable = false),
-        StructField("Out", DoubleType, nullable = false),
-        StructField("Nov", DoubleType, nullable = false),
-        StructField("Dez", DoubleType, nullable = false),
-        StructField("Total", DoubleType, nullable = false)))
+        StructField("ANO", IntegerType, nullable = true),
+        StructField("SEGMENTO", StringType, nullable = true),
+        StructField("ESTADO", StringType, nullable = true),
+        StructField("Jan", DoubleType, nullable = true),
+        StructField("Fev", DoubleType, nullable = true),
+        StructField("Mar", DoubleType, nullable = true),
+        StructField("Abr", DoubleType, nullable = true),
+        StructField("Maio", DoubleType, nullable = true),
+        StructField("Jun", DoubleType, nullable = true),
+        StructField("Jul", DoubleType, nullable = true),
+        StructField("Ago", DoubleType, nullable = true),
+        StructField("Set", DoubleType, nullable = true),
+        StructField("Out", DoubleType, nullable = true),
+        StructField("Nov", DoubleType, nullable = true),
+        StructField("Dez", DoubleType, nullable = true),
+        StructField("Total", DoubleType, nullable = true)))
 
 
     def execute(spark: SparkSession): DataFrame = {
-        try {
-            log.info(s"Initial read xls segment... -> ")
-            val worksheet = "segment"
-            val sheetPos = "!A1:P5000"
-            val ws = mergeWorkSheets(spark, worksheet, sheetPos, segmentSchema)
-            println(s"worksheet: $worksheet quant-> " + ws.count)
-            ws
-        } catch {
-            case e: Exception => log.info(e.printStackTrace())
-        }
+        log.info(s"Initial read xls segment... -> ")
+        val worksheet = "segment"
+        val sheetPos = "!A1:P5000"
+        val ws = mergeWorkSheets(spark, worksheet, sheetPos, segmentSchema)
+        println(s"worksheet: $worksheet quant-> " + ws.count)
+        aggRegion(ws, "SÃO PAULO", "2017").show
+        ws
     }
 
 

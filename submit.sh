@@ -15,7 +15,7 @@ MODULE="src/main/resources/"
 PATH_JARS="target/scala-2.12/"
 PATH_CONF=${MODULE}"/"
 
-SPARK_APPLICATION=${PATH_JARS}"anp-spark-assembly-0.1.jar"
+SPARK_APPLICATION=${PATH_JARS}"spark-excell-config-assembly-0.1.jar"
 APPLICATION_MAIN_CLASS=anp.Execute
 
 APPLICATION_ARGS="anp ws"
