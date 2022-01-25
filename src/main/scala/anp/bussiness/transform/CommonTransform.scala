@@ -14,6 +14,18 @@ trait CommonTransform {
     val configManager = ConfigFactory.load()
     val file = configManager.getString(s"sheet.path_hdfs")
 
+
+    // tableType None if table is hybrid
+    private[pinot] case class PinotDataSourceReadOptions(
+        tableName: String,
+        tableType: Option[TableType],
+        controller: String,
+        broker: String,
+        usePushDownFilters: Boolean,
+        segmentsPerSplit: Int,
+        pinotServerTimeoutMs: Long)
+
+
     def aggRegion(df: DataFrame, uf: String, ano: String): DataFrame = {
         val region = df.filter(col("ESTADO")===lit(uf) && col("ANO") === lit(ano))
             .agg(
